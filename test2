@@ -1,0 +1,76 @@
+$(document).ready(function () {
+  ajaxGet();
+  // DO GET
+  async function ajaxGet() {
+    $.ajax({
+      type: "GET",
+      url: window.location + "api/customers/all",
+      success: function (result) {
+
+        $.each(result, function (i, customer) {
+          const customerRow = `<tr>
+						<td>  ${customer.Market} + '</td>' +
+						<td> ${customer.LastReceived} </td>
+						<td> ${customer.InclusivePeriod}</td>
+						<td> ${customer.NextScheduledRun}</td>
+						<td>
+							<button 
+								id='gd-price-btn-${i}' 
+								type="button" 
+								class="btn btn-lg btn-danger" 
+								data-toggle="popover" 
+								title="pop" 
+								data-content="xyz"
+								
+								>
+							 popover
+							</button>
+								
+						</td>
+						<td><a href="' + customer.Information + '"><i class="fa fa-info-circle fa-2x"></i></a></td>'
+						</tr>`;
+          $("#customerTable tbody").append(customerRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+        // $.each(result, function(i, customer){
+        // 	const customerRow = '<div>' +
+        // 		'<div class="widget-title">Next Job Run</div>' +
+        // 		'<div class="widget-title">' + customer.Market + '</div>' +
+        // 		'<div class="widget-int">' + customer.NextScheduledRun + '</div>'+
+        // 		'</div>';
+        // 	$('#sliderContent').append(customerRow);
+        //
+        // });
+        var spliderRef = $(".splide__list");
+        console.log(result);
+        let content = "";
+        let paginator = "";
+        result.forEach((obj, i) => {
+          content += ` 
+            <li class="splide__slide">
+        			<div class="">
+        				<div class="widget-title">Next Job Run</div>
+        				<div class="widget-title">${obj.Market}</div>
+        				<div class="widget-int">${obj.NextScheduledRun}</div>
+        			</div> 
+            </li>
+        	`;
+        });
+        spliderRef.html(content);
+        new Splide(".splide", {
+          type: "loop",
+          autoplay: true,
+          arrows: false,
+        }).mount();
+
+      },
+
+      error: function (e) {
+        alert("ERROR: ", e);
+        console.log("ERROR: ", e);
+      },
+    });
+  }
+});
