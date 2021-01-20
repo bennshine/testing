@@ -1,0 +1,136 @@
+using System;
+using SmartConfig.DataModels;
+using SmartConfig;
+using SmartLog;
+using Serilog;
+using CommonItems.Helpers;
+using System.Data;
+using CommonItems.Models;
+using System.Collections.Generic;
+using CommonItems.DbTableModels;
+using System.IO;
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.Linq;
+using DocumentFormat.OpenXml.Vml;
+
+namespace Jobs.Jobs
+{
+    public class GbdaTest : IJob
+    {
+
+        public string Name { get; } = "GbdaTest";
+
+        public bool StartRun(ConfigModel configReader)
+        {
+           
+
+             //Create storage table for CSV data
+            DataTable csvDataTable = DataTableHelper.CreateDataTable(typeof(ISEMPricesModel));
+
+            //when calling a function 
+            deleteCSVLine("DataModels\\Test\\Ireland_PowerPrice_Forecast_Meteologica_Total_Hourly_202009092214 - Copy.csv");
+
+            try
+            {
+                csvDataTable = CSVHelper.ReadCSV("DataModels\\Test\\Ireland_PowerPrice_Forecast_Meteologica_Total_Hourly_202009092214 - Copy.csv", CSVDelimiterType.SemiColon, true, true);
+            }
+            catch (Exception e)
+            {
+                Log.Information(e.ToString());
+            }
+            //csvDataTable = CSVHelper.ReadCSV(configReader.ISEMPRICESS_ApxPath, CSVDelimiterType.SemiColon, true, true);
+
+            //}
+            //Create upload dataTable formatted for volData table, then populate it
+            DataTable uploadTable = DataTableHelper.CreateDataTable(typeof(ISEMPricesModel));
+            uploadTable = populateUploadTable(csvDataTable, uploadTable, "POWER", configReader);
+
+            Log.Information("Uploading System Forecast data to prices_Staging");
+                //Upload data to volData table in DB
+            DatabaseHelper.BulkUploadToDB(configReader.GBBM_DbTableName, uploadTable, false);
+
+            
+
+            return true;
+
+           
+        }
+        //void = no return type | function | 
+        public void deleteCSVLine(string Filepath)
+        {
+
+            List<string> lines = File.ReadAllLines(Filepath).ToList();
+            List<string> output = new List<string>();
+
+            foreach (var line in lines)
+            {
+                if (line.Contains(";")) 
+                {
+                    //lines.RemoveAt(i);
+                    output.Add(line);
+                }
+            }
+            File.WriteAllLines(Filepath, output.ToArray());
+            
+            //foreach (var line in lines)
+            //{
+            //    Console.WriteLine(line);
+            //}
+            //if (File.Exists(Filepath))
+            //{
+            //    string[] allLines = System.IO.File.ReadAllLines(Filepath);
+            //    using (StreamWriter sw = new StreamWriter(Filepath))
+            //    {
+            //        foreach (string line in allLines)
+            //        {
+
+            //            //identify a blank line here: ! = if it does not contain || = oR
+            //            //
+            //            if (!string.IsNullOrEmpty(line) || line.Contains(";"))
+            //            {
+            //                sw.WriteLine(line);
+            //            }
+            //            //else
+            //            //{
+            //            //    sw.WriteLine(line);
+            //            //}
+            //        }
+            //    }
+            //}
+        }
+
+        //Populate a given datatable and return it with populated rows
+        public DataTable populateUploadTable(DataTable csvTable, DataTable uploadTable, string commodity, ConfigModel configReader)
+        {
+
+
+
+                foreach (DataRow dr in csvTable.Rows)
+                {
+
+                //if (!csvTable.Rows.Contains(";"))
+                //{
+                //for (var i = 0; i > 4; i++)
+                //{
+
+                    DateTime loadDate = DateTime.Now;
+                    //DateTime priceDate = File.GetLastWriteTime("DataModels\\Test\\Ireland_PowerPrice_Forecast_Meteologica_Total_Hourly_202009092214.csv");
+                    DateTime priceDate = DateTime.Parse(dr["From yyyy-mm-dd hh:mm"].ToString());
+                    DateTime maturityDate = DateTime.Parse(dr["From yyyy-mm-dd hh:mm"].ToString());
+                    string priceSet = "FORECAST";
+                    string _commodity = commodity;
+                    DateTime expiryDate = DateTime.Parse(dr["From yyyy-mm-dd hh:mm"].ToString());
+                    decimal price = decimal.Parse(dr["price"].ToString());
+                    uploadTable.Rows.Add(priceSet, priceDate, _commodity, "ISEMDATest", maturityDate, expiryDate, price, loadDate);
+                    // }
+                    //}
+                }
+
+            
+            return uploadTable;
+        }
+
+
+    }
+}
