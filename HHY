@@ -1,0 +1,520 @@
+[
+  {
+    "CPUs": [
+      {
+        "CPUID": "CPU0",
+        "CPUName": "Intel(R) Xeon(R) CPU E5-2660 v4 @ 2.00GHz",
+        "CPUStatus": "OK",
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "LoadPercentage": "4%",
+        "LogicalProcessors": "8",
+        "PhysicalCores": "8"
+      }
+    ],
+    "DataTimeStamp": "2021-01-17T15:00:14.413",
+    "Disks": [
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "C:",
+        "FreeSpace": "24GB",
+        "FreeSpacePerc": "24%",
+        "TotalSpace": "100GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "D:",
+        "FreeSpace": "55GB",
+        "FreeSpacePerc": "91%",
+        "TotalSpace": "60GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "E:",
+        "FreeSpace": "0B",
+        "FreeSpacePerc": "0%",
+        "TotalSpace": "50GB"
+      }
+    ],
+    "Group": "UAT",
+    "IP": "172.30.2.105",
+    "OSArchitecture": "64-bit",
+    "OSName": "Microsoft Windows Server 2012 R2 Standard",
+    "OSVersion": "6.3.9600",
+    "RAMLoadPerc": "11%",
+    "ServerName": "ENR-HVH-EADS-02",
+    "Sessions": [
+      {
+        "SessionID": "12",
+        "SessionState": "Disconnected",
+        "UserName": "VIRNYM",
+        "MachineID": "N/A",
+        "FullUserName": "Nirupamaram Mandava"
+      },
+      {
+        "SessionID": "14",
+        "SessionState": "Disconnected",
+        "UserName": "sbrady1",
+        "MachineID": "N/A",
+        "FullUserName": "Sean Brady"
+      },
+      {
+        "SessionID": "24",
+        "SessionState": "Disconnected",
+        "UserName": "ScoutRunner",
+        "MachineID": "N/A",
+        "FullUserName": "ISEM Scout"
+      }
+    ],
+    "TotalRAM": "32GB"
+  },
+  {
+    "CPUs": [
+      {
+        "CPUID": "CPU0",
+        "CPUName": "Intel(R) Xeon(R) CPU E5-2660 v4 @ 2.00GHz",
+        "CPUStatus": "OK",
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "LoadPercentage": "65%",
+        "LogicalProcessors": "8",
+        "PhysicalCores": "8"
+      }
+    ],
+    "DataTimeStamp": "2021-01-17T15:00:14.413",
+    "Disks": [
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "C:",
+        "FreeSpace": "15GB",
+        "FreeSpacePerc": "22%",
+        "TotalSpace": "70GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "D:",
+        "FreeSpace": "54GB",
+        "FreeSpacePerc": "90%",
+        "TotalSpace": "60GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "E:",
+        "FreeSpace": "41GB",
+        "FreeSpacePerc": "82%",
+        "TotalSpace": "50GB"
+      }
+    ],
+    "Group": "UAT",
+    "IP": "172.30.2.102",
+    "OSArchitecture": "64-bit",
+    "OSName": "Microsoft Windows Server 2012 R2 Standard",
+    "OSVersion": "6.3.9600",
+    "RAMLoadPerc": "18%",
+    "ServerName": "ENR-HVH-EADS-03",
+    "Sessions": [],
+    "TotalRAM": "32GB"
+  },
+  {
+    "CPUs": [
+      {
+        "CPUID": "CPU0",
+        "CPUName": "Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz",
+        "CPUStatus": "OK",
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "LoadPercentage": "4%",
+        "LogicalProcessors": "8",
+        "PhysicalCores": "8"
+      }
+    ],
+    "DataTimeStamp": "2021-01-17T15:00:14.413",
+    "Disks": [
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "C:",
+        "FreeSpace": "20GB",
+        "FreeSpacePerc": "33%",
+        "TotalSpace": "60GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "D:",
+        "FreeSpace": "629GB",
+        "FreeSpacePerc": "29%",
+        "TotalSpace": "2TB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "E:",
+        "FreeSpace": "59GB",
+        "FreeSpacePerc": "59%",
+        "TotalSpace": "100GB"
+      }
+    ],
+    "Group": "UAT",
+    "IP": "172.30.2.101",
+    "OSArchitecture": "64-bit",
+    "OSName": "Microsoft Windows Server 2012 R2 Standard",
+    "OSVersion": "6.3.9600",
+    "RAMLoadPerc": "49%",
+    "ServerName": "ENR-HVH-EDB-01",
+    "Sessions": [],
+    "TotalRAM": "64GB"
+  },
+  {
+    "CPUs": [
+      {
+        "CPUID": "CPU0",
+        "CPUName": "Intel(R) Xeon(R) CPU E5-2650 v3 @ 2.30GHz",
+        "CPUStatus": "OK",
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "LoadPercentage": "10%",
+        "LogicalProcessors": "2",
+        "PhysicalCores": "2"
+      }
+    ],
+    "DataTimeStamp": "2021-01-17T15:00:14.413",
+    "Disks": [
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "C:",
+        "FreeSpace": "29GB",
+        "FreeSpacePerc": "49%",
+        "TotalSpace": "60GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "D:",
+        "FreeSpace": "2GB",
+        "FreeSpacePerc": "11%",
+        "TotalSpace": "20GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "E:",
+        "FreeSpace": "43GB",
+        "FreeSpacePerc": "86%",
+        "TotalSpace": "50GB"
+      }
+    ],
+    "Group": "UAT",
+    "IP": "172.30.2.106",
+    "OSArchitecture": "64-bit",
+    "OSName": "Microsoft Windows Server 2012 R2 Standard",
+    "OSVersion": "6.3.9600",
+    "RAMLoadPerc": "35%",
+    "ServerName": "ENR-HVH-EMSG-02",
+    "Sessions": [
+      {
+        "SessionID": "5",
+        "SessionState": "Disconnected",
+        "UserName": "ScoutRunner",
+        "MachineID": "N/A",
+        "FullUserName": "ISEM Scout"
+      }
+    ],
+    "TotalRAM": "8GB"
+  },
+  {
+    "CPUs": [
+      {
+        "CPUID": "CPU0",
+        "CPUName": "Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz",
+        "CPUStatus": "OK",
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "LoadPercentage": "4%",
+        "LogicalProcessors": "4",
+        "PhysicalCores": "4"
+      }
+    ],
+    "DataTimeStamp": "2021-01-17T15:00:14.413",
+    "Disks": [
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "C:",
+        "FreeSpace": "35GB",
+        "FreeSpacePerc": "58%",
+        "TotalSpace": "60GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "D:",
+        "FreeSpace": "26GB",
+        "FreeSpacePerc": "15%",
+        "TotalSpace": "170GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "E:",
+        "FreeSpace": "50GB",
+        "FreeSpacePerc": "100%",
+        "TotalSpace": "50GB"
+      }
+    ],
+    "Group": "UAT",
+    "IP": "172.30.2.109",
+    "OSArchitecture": "64-bit",
+    "OSName": "Microsoft Windows Server 2012 R2 Standard",
+    "OSVersion": "6.3.9600",
+    "RAMLoadPerc": "44%",
+    "ServerName": "ENR-HVH-NAPP-11",
+    "Sessions": [
+      {
+        "SessionID": "11",
+        "SessionState": "Disconnected",
+        "UserName": "ScoutRunner",
+        "MachineID": "N/A",
+        "FullUserName": "ISEM Scout"
+      }
+    ],
+    "TotalRAM": "16GB"
+  },
+  {
+    "CPUs": [
+      {
+        "CPUID": "CPU0",
+        "CPUName": "Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz",
+        "CPUStatus": "OK",
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "LoadPercentage": "4%",
+        "LogicalProcessors": "4",
+        "PhysicalCores": "4"
+      }
+    ],
+    "DataTimeStamp": "2021-01-17T15:00:14.413",
+    "Disks": [
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "C:",
+        "FreeSpace": "36GB",
+        "FreeSpacePerc": "60%",
+        "TotalSpace": "60GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "D:",
+        "FreeSpace": "62GB",
+        "FreeSpacePerc": "31%",
+        "TotalSpace": "200GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "E:",
+        "FreeSpace": "50GB",
+        "FreeSpacePerc": "100%",
+        "TotalSpace": "50GB"
+      }
+    ],
+    "Group": "UAT",
+    "IP": "172.30.2.110",
+    "OSArchitecture": "64-bit",
+    "OSName": "Microsoft Windows Server 2012 R2 Standard",
+    "OSVersion": "6.3.9600",
+    "RAMLoadPerc": "29%",
+    "ServerName": "ENR-HVH-NAPP-12",
+    "Sessions": [],
+    "TotalRAM": "16GB"
+  },
+  {
+    "CPUs": [
+      {
+        "CPUID": "CPU0",
+        "CPUName": "Intel(R) Xeon(R) CPU E5-2650 v3 @ 2.30GHz",
+        "CPUStatus": "OK",
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "LoadPercentage": "2%",
+        "LogicalProcessors": "4",
+        "PhysicalCores": "4"
+      }
+    ],
+    "DataTimeStamp": "2021-01-17T15:00:14.413",
+    "Disks": [
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "C:",
+        "FreeSpace": "20GB",
+        "FreeSpacePerc": "33%",
+        "TotalSpace": "60GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "D:",
+        "FreeSpace": "477GB",
+        "FreeSpacePerc": "40%",
+        "TotalSpace": "1TB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "E:",
+        "FreeSpace": "215GB",
+        "FreeSpacePerc": "61%",
+        "TotalSpace": "350GB"
+      }
+    ],
+    "Group": "UAT",
+    "IP": "172.30.2.103",
+    "OSArchitecture": "64-bit",
+    "OSName": "Microsoft Windows Server 2012 R2 Standard",
+    "OSVersion": "6.3.9600",
+    "RAMLoadPerc": "94%",
+    "ServerName": "ENR-HVH-NDB-01",
+    "Sessions": [
+      {
+        "SessionID": "4",
+        "SessionState": "Disconnected",
+        "UserName": "sydzh",
+        "MachineID": "N/A",
+        "FullUserName": "Darran Hamilton"
+      },
+      {
+        "SessionID": "6",
+        "SessionState": "Disconnected",
+        "UserName": "ScoutRunner",
+        "MachineID": "N/A",
+        "FullUserName": "ISEM Scout"
+      },
+      {
+        "SessionID": "8",
+        "SessionState": "Active",
+        "UserName": "sxkwl",
+        "MachineID": "PNI-HVH-TS-04",
+        "FullUserName": "Kieran Lavery (Capita)"
+      }
+    ],
+    "TotalRAM": "32GB"
+  },
+  {
+    "CPUs": [
+      {
+        "CPUID": "CPU0",
+        "CPUName": "Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz",
+        "CPUStatus": "OK",
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "LoadPercentage": "8%",
+        "LogicalProcessors": "4",
+        "PhysicalCores": "4"
+      }
+    ],
+    "DataTimeStamp": "2021-01-17T15:00:14.413",
+    "Disks": [
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "C:",
+        "FreeSpace": "3GB",
+        "FreeSpacePerc": "5%",
+        "TotalSpace": "60GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "D:",
+        "FreeSpace": "43GB",
+        "FreeSpacePerc": "43%",
+        "TotalSpace": "100GB"
+      }
+    ],
+    "Group": "UAT",
+    "IP": "172.30.2.182",
+    "OSArchitecture": "64-bit",
+    "OSName": "Microsoft Windows Server 2012 R2 Standard",
+    "OSVersion": "6.3.9600",
+    "RAMLoadPerc": "42%",
+    "ServerName": "ENR-HVH-MTL-02",
+    "Sessions": [
+      {
+        "SessionID": "10",
+        "SessionState": "Disconnected",
+        "UserName": "ISEMMATLABUAT",
+        "MachineID": "N/A",
+        "FullUserName": "ISEM MATLAB"
+      },
+      {
+        "SessionID": "14",
+        "SessionState": "Disconnected",
+        "UserName": "eajtm",
+        "MachineID": "N/A",
+        "FullUserName": "James McBrearty"
+      },
+      {
+        "SessionID": "15",
+        "SessionState": "Disconnected",
+        "UserName": "ScoutRunner",
+        "MachineID": "N/A",
+        "FullUserName": "ISEM Scout"
+      },
+      {
+        "SessionID": "27",
+        "SessionState": "Disconnected",
+        "UserName": "EACYF",
+        "MachineID": "N/A",
+        "FullUserName": "Ciaran Fennell"
+      },
+      {
+        "SessionID": "30",
+        "SessionState": "Disconnected",
+        "UserName": "EGBXA",
+        "MachineID": "N/A",
+        "FullUserName": "Benn Adu-Opoku"
+      },
+      {
+        "SessionID": "31",
+        "SessionState": "Disconnected",
+        "UserName": "sydzh",
+        "MachineID": "N/A",
+        "FullUserName": "Darran Hamilton"
+      }
+    ],
+    "TotalRAM": "16GB"
+  },
+  {
+    "CPUs": [
+      {
+        "CPUID": "CPU0",
+        "CPUName": "Intel(R) Xeon(R) Gold 6138 CPU @ 2.00GHz",
+        "CPUStatus": "OK",
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "LoadPercentage": "33%",
+        "LogicalProcessors": "4",
+        "PhysicalCores": "4"
+      }
+    ],
+    "DataTimeStamp": "2021-01-17T15:00:14.413",
+    "Disks": [
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "C:",
+        "FreeSpace": "20GB",
+        "FreeSpacePerc": "34%",
+        "TotalSpace": "60GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "D:",
+        "FreeSpace": "12MB",
+        "FreeSpacePerc": "0%",
+        "TotalSpace": "100GB"
+      },
+      {
+        "DataTimeStamp": "0001-01-01T00:00:00",
+        "DriveLetter": "E:",
+        "FreeSpace": "48GB",
+        "FreeSpacePerc": "96%",
+        "TotalSpace": "50GB"
+      }
+    ],
+    "Group": "UAT",
+    "IP": "172.30.2.104",
+    "OSArchitecture": "64-bit",
+    "OSName": "Microsoft Windows Server 2012 R2 Standard",
+    "OSVersion": "6.3.9600",
+    "RAMLoadPerc": "50%",
+    "ServerName": "ENR-HVH-NAPP-02",
+    "Sessions": [
+      {
+        "SessionID": "12",
+        "SessionState": "Disconnected",
+        "UserName": "ScoutRunner",
+        "MachineID": "N/A",
+        "FullUserName": "ISEM Scout"
+      }
+    ],
+    "TotalRAM": "16GB"
+  }
+]
