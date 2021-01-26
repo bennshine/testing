@@ -1,0 +1,21 @@
+    <script type="text/javascript">
+        $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
+        $(window).on('load', function(){
+        setTimeout(removeLoader, 2000); //wait for page load PLUS two seconds.
+        });
+        let isLoading = true;
+        document.getElementById('wrapper').style.display = 'none';
+        document.getElementById('loadingDiv').style.display = 'block';
+
+        setTimeout(() => {
+            document.getElementById('wrapper').style.display = 'block';
+            document.getElementById('wrapper').style.display = 'none';
+            isLoading = false;
+        }, 10000)
+        function removeLoader(){
+            $( "#loadingDiv" ).fadeOut(500, function() {
+            // fadeOut complete. Remove the loading div
+            $( "#loadingDiv" ).remove(); //makes page more lightweight 
+        });  
+        }
+    </script>
