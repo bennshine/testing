@@ -1,189 +1,999 @@
 $(document).ready(function () {
-    ajaxGet();
+  ajaxGet();
+  ajaxGet1();
 
-    // DO GET
-    async function ajaxGet() {
-        $.ajax({
-            type: "GET",
-            url: window.location + "api/dashboard/all",
-            
-            success: function (result) {
-                function getColor(percentage) {
-                    const percent = parseInt(percentage.split('%')[0]);
+  // DO GET
+  async function ajaxGet() {
+    $.ajax({
+      type: 'GET',
+      url: '/api/gbprices',
 
-                    if (percent >= 81 && percent <= 100) {
-                        return '#ff4444c2';
-                    } else if (percent >= 41 && percent <= 80) {
-                        return 'orange';
-                    } else {
-                        return 'green';
-                    };
-                }
-                result.forEach((volprice, i) => {
-                  
-                    const volpriceRow = `<div class="col-md-3">
-                    <div class="card shadow mb-4">
-                    <!-- Card Header - Dropdown -->
-                    <div class="colora">
-                        <h6 class="m-0 font-weight-bold text-primary">SN:${volprice.ServerName} | <b style="color:red">IP: ${volprice.IP}</b></h6>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div id="Sarah_chart_div" class="chart"></div>
-                        </div>
-                    </div>
-                    <div class="row" style="padding: 20px;">
-                    ${volprice.Disks.map((disk, i) => {
-                        return (i % 4 == 3 || i == 0) ? '<div class="col-md-6" ><div class="text-xs font-weight-bold text-info text-uppercase mb-1">'+disk.DriveLetter+'</div><div class="progress"><div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:'+disk.FreeSpacePerc+';background:'+getColor(disk.FreeSpacePerc)+' !important;">'+disk.FreeSpacePerc+'</div></div></div>'  :'<div class="col-md-6" ><div class="text-xs font-weight-bold text-info text-uppercase mb-1">'+disk.DriveLetter+'</div><div class="progress"><div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:'+disk.FreeSpacePerc+';background:'+getColor(disk.FreeSpacePerc)+' !important;">'+disk.FreeSpacePerc+'</div></div></div>';
-                    }).join("")}
-                    </div>
-                        <div class="card-footer" style=" font-size: 13px; ">
-                        <table class="table">
-                            <thead onclick="osinfoT(this, ${i})">
-                                <th class="table" colspan="2" style="border-radius: 10px;background: linear-gradient(45deg, #3949AB, #2962FF);text-align: center;cursor: pointer;">Server OS Info</th>
-                            </thead>
-                        </table>
-                        <table class="table"  style=" padding:10px; display:none;" id="osinfo${i}" style=" font-size: 13px!important; ">
-                            <thead  class="thead-dark">
-                                <th class="table-primary" >OS Name</th>
-                                <td>${volprice.OSName}</td>
-                            </thead>
-                            <thead>
-                                <th  class="table-success">OS Version</th>
-                                <td>${volprice.OSVersion}</td>
-                            </thead>
-                            <thead>
-                                <th class="table-warning">OS Architecture</th>
-                                <td>${volprice.OSArchitecture}</td>
-                            </thead>
-                        </table>
-                        <table class="table"  onclick="cpuram(this, ${i})">
-                            <thead>
-                                <th class="table-warning" colspan="4"  style="border-radius: 10px;background: linear-gradient(45deg, #2ca961, #2ed88a) !important;text-align: center;cursor: pointer;">Server CPU and RAM Info</th>
-                            </thead>
-                        </table>
-                        <table class="table"  style=" padding:10px; display:none;" id="cpuram${i}">
-                            <thead  class="thead-dark">
-                                <th class="table-primary" colspan="4">CPU Name</th>
-                            </thead>
-                            <tbody  class="thead-dark">
-                            ${volprice.CPUs.map(s => {
-                                return '<tr><td colspan="4">'+s.CPUName+'</td></tr>'
-                            })}
-                            <thead  class="thead-dark">
-                                <th  class="table-success">CPU Status</th>
-                                <th  class="table-success">CPU Count(L)</th>
-                                <th  class="table-success">CPU Count(P)</th>
-                            </thead>
-                            ${volprice.CPUs.map(s => {
-                                return '<tr><td >'+s.CPUStatus+'</td><td>'+s.LogicalProcessors+'</td><td>'+s.PhysicalCores+'</td></tr>'
-                            })}      
-                            <thead  class="thead-dark" >
-                                <th class="table-primary"  colspan="4">Total RAM</th>
-                            </thead>
-                            <td>${volprice.TotalRAM}</td>           
-                            </tbody>
-  
-                        <table class="table" onclick="rdpsections(this, ${i})" >
-                            <thead>
-                                <th class="table-danger" colspan="5" style="border-radius: 10px;background: linear-gradient(45deg, #e52d27, #b31217) !important;text-align: center;cursor: pointer;"><a >RDP Sections</a></th>
-                            </thead>
-                        </table>
-                        <table class="table"  style=" padding:10px; display:none;" id="rdpsections${i}">
-                
-                            <thead  class="thead-dark">
-                                <tr>
-                                    <th class="table-primary">Section Name</th>
-                                    <th class="table-primary">User Name</th>
-                                    <th class="table-primary">State</th>
-                                    <th class="table-primary">Machine ID</th>
-                                    <th class="table-primary">Full Name</th>
-                                </tr>
-                                ${volprice.Sessions.map(s => {
-                        return '<tr><td>'+s.SessionID+'</td><td>'+s.UserName+'</td><td>'+s.SessionState+'</td><td>'+s.MachineID+'</td><td>'+s.FullUserName+'</td></tr>'
-                    }).join('')}
-                                
-                            </thead>
-                        </table>
-                        <table class="table" onclick="services(this, ${i})" >
-                            <thead>
-                                <th class="table-danger" colspan="5" style="border-radius: 10px;background: linear-gradient(45deg, #9f43c5, #6d556c) !important;text-align: center;cursor: pointer;"><a >Services</a></th>
-                            </thead>
-                        </table>
-                        <table class="table"  style=" padding:10px; display:none;" id="services${i}">
-                            <thead  class="thead-dark">
-                                <th colspan="4">Service Name</th>
-                                <th colspan="4">Run As User</th>
-                            </thead>
-                            <tbody  class="thead-dark">
-  
-                            </tbody>
-                        </table>
-                        <table class="table" >
-                            <thead>
-                                <button type="button" class="btn btn-primary" style="font-size: 12px;border-radius: 10px;background: linear-gradient(45deg, #5c6b4e, #5c6d55) !important;text-align: center;cursor: pointer;width: 100%;padding: 13px;border: none;font-weight: 700;" data-toggle="modal" data-target="#exampleModal">
-                                    Scheduled Task
-                                  </button>                                            
-                                </thead>
-                        </table>
-                
-                          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                              <div class="modal-content" style="width:700px;">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel">Scheduled Task</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                    <table class="table">
-                                        <thead class="thead-light">
-                                            <th>Task Name</th>
-                                            <th>Task Folder</th>
-                                            <th>Enabled</th>
-                                            <th>Last Run Time</th>
-                                            <th>Next Run Time</th>
-                                            <th>Missed Runs</th>
-                                            <th>Run As User</th>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                    </div>
-                </div> 
-					        	</div>`;
-                    $("#shit").append(volpriceRow);
-                    //Append newDiv to Popovercontent
+      success: function (result) {
+        // $.each(result, function(i, gbprice){
+        //     const gbpriceRow = `<li class="simple-slider-element ${i}">
+        //             <div>
+        //                 <div class="widget-title">Next Job Run</div>
+        //                 <div class="widget-title">${gbprice.Market}</div>
+        //                 <div class="widget-int">${gbprice.NextScheduledRun}</div>
+        //             </div>
+        //         </li>`;
+        //     $('#testing').append(gbpriceRow);
 
-                });
+        // });
+        let spliderRef = $('#splide__list1');
+        console.log(result);
+        let content = '';
+        let paginator = '';
+        result.forEach((gbprice, i) => {
+          content += ` 
+                    <li class="splide__slide">
+                            <div class="">
+                                <div class="widget-title">Next Job Run</div>
+                                <div class="widget-title">${gbprice.Market}</div>
+                                <div class="widget-int">${gbprice.NextScheduledRun}</div>
+                            </div> 
+                    </li>
+        	    `;
+        });
+        spliderRef.html(content);
+        new Splide('#splide1', {
+          type: 'loop',
+          autoplay: true,
+          arrows: true,
+        }).mount();
+        $.each(result, function (i, gbprice) {
+          const gbpriceRow = `<tr>
+						<td > ${gbprice.Market}</td>' +
+						<td> ${gbprice.LastReceived} </td>
+						<td> ${gbprice.InclusivePeriod}</td>
+						<td> ${gbprice.NextScheduledRun}</td>
+						<td>
+							<a  class="hide-button-background" 
+							    tabindex="0"
+                                data-placement="right"
+                                role="button"
+                                data-html="true"
+                                data-toggle="popover"
+                                data-trigger="focus"
+								id='gd-price-btn-${i}' 
+								data-toggle="popover" 
+								title="Run History" 
+								data-content="<b>From</b><br>${gbprice.RunHistory}</br><br><b>Inclusive Periods</b></br>${gbprice.InclusivePeriod}"><i class="fa fa-info-circle fa-2x"></i>
 
+					
+							</a>
+								
+                        </td>
+						<td><a href=${gbprice.Information}><i class="fa fa-globe fa-2x fa-spin"></i></a></td>'
+						</tr>`;
+          $('#customerTable tbody').append(gbpriceRow);
+          //Append newDiv to Popovercontent
 
-            },
+          $('[data-toggle="popover"]').popover();
+        });
+      },
 
-            error: function (e) {
-                alert("ERROR: ", e);
-                console.log("ERROR: ", e);
-            }
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+
+    $.ajax({
+      type: 'GET',
+      url: '/api/volprices/1/7',
+
+      success: function (result) {
+        $.each(result, function (i, volprice) {
+          const volpriceRow = `<tr>
+						<td> ${volprice.Market}</td>' +
+						<td> ${volprice.LastReceived} </td>
+						<td> ${volprice.InclusivePeriod}</td>
+						<td> ${volprice.NextScheduledRun}</td>
+						<td>
+							<a  class="hide-button-background" 
+							    tabindex="0"
+                                data-placement="right"
+                                role="button"
+                                data-html="true"
+                                data-toggle="popover"
+                                data-trigger="focus"
+								id='gd-price-btn-${i}' 
+								data-toggle="popover" 
+								title="Run History" 
+								data-content="<b>From</b><br>${volprice.RunHistory}</br><br><b>Inclusive Periods</b></br>${volprice.InclusivePeriod}"><i class="fa fa-info-circle fa-2x"></i>
+
+					
+							</a>
+								
+                        </td>
+						<td><a href=${volprice.Information}><i class="fa fa-globe fa-2x fa-spin"></i></a></td>'
+						</tr>`;
+          $('#meteoTable tbody').append(volpriceRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+      },
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+    $.ajax({
+      type: 'GET',
+      url: '/api/volprices/2/7',
+
+      success: function (result) {
+        $.each(result, function (i, volprice1) {
+          const volprice1Row = `<tr>
+						<td> ${volprice1.Market}</td>' +
+						<td> ${volprice1.LastReceived} </td>
+						<td> ${volprice1.InclusivePeriod}</td>
+						<td> ${volprice1.NextScheduledRun}</td>
+						<td>
+							<a  class="hide-button-background" 
+							    tabindex="0"
+                                data-placement="right"
+                                role="button"
+                                data-html="true"
+                                data-toggle="popover"
+                                data-trigger="focus"
+								id='gd-price-btn-${i}' 
+								data-toggle="popover" 
+								title="Run History" 
+								data-content="<b>From</b><br>${volprice1.RunHistory}</br><br><b>Inclusive Periods</b></br>${volprice1.InclusivePeriod}"><i class="fa fa-info-circle fa-2x"></i>
+
+					
+							</a>
+								
+                        </td>
+						<td><a href=${volprice1.Information}><i class="fa fa-globe fa-2x fa-spin"></i></a></td>'
+						</tr>`;
+          $('#meteoTable2 tbody').append(volprice1Row);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+      },
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+    $.ajax({
+      type: 'GET',
+      url: '/api/volprices/3/6',
+
+      success: function (result) {
+        $.each(result, function (i, volprice2) {
+          const volprice2Row = `<tr>
+						<td> ${volprice2.Market}</td>' +
+						<td> ${volprice2.LastReceived} </td>
+						<td> ${volprice2.InclusivePeriod}</td>
+						<td> ${volprice2.NextScheduledRun}</td>
+						<td>
+							<a  class="hide-button-background" 
+							    tabindex="0"
+                                data-placement="right"
+                                role="button"
+                                data-html="true"
+                                data-toggle="popover"
+                                data-trigger="focus"
+								id='gd-price-btn-${i}' 
+								data-toggle="popover" 
+								title="Run History" 
+								data-content="<b>From</b><br>${volprice2.RunHistory}</br><br><b>Inclusive Periods</b></br>${volprice2.InclusivePeriod}"><i class="fa fa-info-circle fa-2x"></i>
+
+					
+							</a>
+								
+                        </td>
+						<td><a href=${volprice2.Information}><i class="fa fa-globe fa-2x fa-spin"></i></a></td>'
+						</tr>`;
+          $('#meteoTable3 tbody').append(volprice2Row);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+      },
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+
+    $.ajax({
+      type: 'GET',
+      url: '/api/eirgridprices',
+
+      success: function (result) {
+        // $.each(result, function(i, eirgridprice){
+        //     const eirgridpriceRow = `<li class="simple-slider-element ${i}">
+        //             <div>
+        //                 <div class="widget-title">Next Job Run</div>
+        //                 <div class="widget-title">${eirgridprice.Market}</div>
+        //                 <div class="widget-int">${eirgridprice.NextScheduledRun}</div>
+        //             </div>
+        //         </li>`;
+        //     $('#testing1').append(eirgridpriceRow);
+
+        // });
+        let spliderRef = $('#splide__list2');
+        console.log(result);
+        let content = '';
+        let paginator = '';
+        result.forEach((eirgridprice, i) => {
+          content += ` 
+                    <li class="splide__slide">
+                            <div class="">
+                                <div class="widget-title">Next Job Run</div>
+                                <div class="widget-title">${eirgridprice.Market}</div>
+                                <div class="widget-int">${eirgridprice.NextScheduledRun}</div>
+                            </div> 
+                    </li>
+        	    `;
+        });
+        spliderRef.html(content);
+        new Splide('#splide2', {
+          type: 'loop',
+          autoplay: true,
+          arrows: true,
+        }).mount();
+        $.each(result, function (i, eirgridprice) {
+          const eirgridpriceRow = `<tr>
+                    
+						<td> ${eirgridprice.Market}</td>' +
+						<td> ${eirgridprice.LastReceived} </td>
+						<td> ${eirgridprice.InclusivePeriod}</td>
+						<td> ${eirgridprice.NextScheduledRun}</td>
+						<td>
+							<a  class="hide-button-background" 
+							    tabindex="0"
+                                data-placement="right"
+                                role="button"
+                                data-html="true"
+                                data-toggle="popover"
+                                data-trigger="focus"
+								id='gd-price-btn-${i}' 
+								data-toggle="popover" 
+								title="Run History" 
+								data-content="<b>From</b><br>${eirgridprice.RunHistory}</br><br><b>Inclusive Periods</b></br>${eirgridprice.InclusivePeriod}"><i class="fa fa-info-circle fa-2x"></i>
+
+					
+							</a>
+								
+                        </td>
+						<td><a href=${eirgridprice.Information}><i class="fa fa-globe fa-2x fa-spin"></i></a></td>'
+						</tr>`;
+          $('#eirgridTable tbody').append(eirgridpriceRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
         });
 
-      
-    }
-})
+        $.each(result, function (i, eirgridprice) {
+          const eirgridpriceRow =
+            '<div>' +
+            '<div class="widget-subtitle" style="background: orange; width: 80%; border-radius: 10px; color: white; padding: 2px;">' +
+            '' +
+            eirgridprice.Market +
+            ' received at ' +
+            eirgridprice.LastReceived +
+            '' +
+            '</div>';
+          $('#successfullJobs').append(eirgridpriceRow);
+        });
+      },
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+
+    $.ajax({
+      type: 'GET',
+      url: '/api/semoreportsprices',
+
+      success: function (result) {
+        let spliderRef = $('#splide__list3');
+        console.log(result);
+        let content = '';
+        let paginator = '';
+        result.forEach((semoreportsprice, i) => {
+          content += ` 
+                    <li class="splide__slide">
+                            <div class="">
+                                <div class="widget-title">Next Job Run</div>
+                                <div class="widget-title">${semoreportsprice.Market}</div>
+                                <div class="widget-int">${semoreportsprice.NextScheduledRun}</div>
+                            </div> 
+                    </li>
+        	    `;
+        });
+        spliderRef.html(content);
+        new Splide('#splide3', {
+          type: 'loop',
+          autoplay: true,
+          arrows: true,
+        }).mount();
+        $.each(result, function (i, semoreportsprice) {
+          const semoreportspriceRow = `<tr>
+						<td> ${semoreportsprice.Market}</td>' +
+						<td> ${semoreportsprice.LastReceived} </td>
+						<td> ${semoreportsprice.InclusivePeriod}</td>
+						<td> ${semoreportsprice.NextScheduledRun}</td>
+						<td>
+							<a  class="hide-button-background" 
+							    tabindex="0"
+                                data-placement="right"
+                                role="button"
+                                data-html="true"
+                                data-toggle="popover"
+                                data-trigger="focus"
+								id='gd-price-btn-${i}' 
+								data-toggle="popover" 
+								title="Run History" 
+								data-content="<b>From</b><br>${semoreportsprice.RunHistory}</br><br><b>Inclusive Periods</b></br>${semoreportsprice.InclusivePeriod}"><i class="fa fa-info-circle fa-2x"></i>
+
+					
+							</a>
+								
+                        </td>
+						<td><a href=${semoreportsprice.Information}><i class="fa fa-globe fa-2x fa-spin"></i></a></td>'
+						</tr>`;
+          $('#semoreportspriceTable tbody').append(semoreportspriceRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+
+        $.each(result, function (i, semoreportsprice) {
+          const semoreportspriceRow =
+            '<div>' +
+            '<div class="widget-subtitle" style="background: orange; width: 80%; border-radius: 10px; color: white; padding: 2px;">' +
+            '' +
+            semoreportsprice.Market +
+            ' received at ' +
+            semoreportsprice.LastReceived +
+            '' +
+            '</div>';
+          $('#successfullJobs').append(semoreportspriceRow);
+        });
+      },
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+
+    $.ajax({
+      type: 'GET',
+      url: '/api/webscrapperprices',
+
+      success: function (result) {
+        let spliderRef = $('#splide__list4');
+        console.log(result);
+        let content = '';
+        let paginator = '';
+        result.forEach((semoreportsprice, i) => {
+          content += ` 
+                    <li class="splide__slide">
+                            <div class="">
+                                <div class="widget-title">Next Job Run</div>
+                                <div class="widget-title">${semoreportsprice.Market}</div>
+                                <div class="widget-int">${semoreportsprice.NextScheduledRun}</div>
+                            </div> 
+                    </li>
+        	    `;
+        });
+        spliderRef.html(content);
+        new Splide('#splide4', {
+          type: 'loop',
+          autoplay: true,
+          arrows: true,
+        }).mount();
+        $.each(result, function (i, webscrapperprice) {
+          const webscrapperpriceRow = `<tr>
+						<td> ${webscrapperprice.Market}</td>' +
+						<td> ${webscrapperprice.LastReceived} </td>
+						<td> ${webscrapperprice.InclusivePeriod}</td>
+						<td> ${webscrapperprice.NextScheduledRun}</td>
+						<td>
+							<a  class="hide-button-background" 
+							    tabindex="0"
+                                data-placement="right"
+                                role="button"
+                                data-html="true"
+                                data-toggle="popover"
+                                data-trigger="focus"
+								id='gd-price-btn-${i}' 
+								data-toggle="popover" 
+								title="Run History" 
+								data-content="<b>From</b><br>${webscrapperprice.RunHistory}</br><br><b>Inclusive Periods</b></br>${webscrapperprice.InclusivePeriod}"><i class="fa fa-info-circle fa-2x"></i>
+
+					
+							</a>
+								
+                        </td>
+						<td><a href=${webscrapperprice.Information}><i class="fa fa-globe fa-2x fa-spin"></i></a></td>'
+						</tr>`;
+          $('#webscrapperpricesTable tbody').append(webscrapperpriceRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+
+        $.each(result, function (i, webscrapperprice) {
+          const webscrapperpriceRow =
+            '<div>' +
+            '<div class="widget-subtitle" style="background: orange; width: 80%; border-radius: 10px; color: white; padding: 2px;">' +
+            '' +
+            webscrapperprice.Market +
+            ' received at ' +
+            webscrapperprice.LastReceived +
+            '' +
+            '</div>';
+          $('#successfullJobs').append(webscrapperpriceRow);
+        });
+      },
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+
+    $.ajax({
+      type: 'GET',
+      url: '/api/ppbmeteredprices',
+
+      success: function (result) {
+        $.each(result, function (i, ppbmeteredprice) {
+          const ppbmeteredpriceRow = `<tr>
+						<td> ${ppbmeteredprice.Market}</td>' +
+						<td> ${ppbmeteredprice.LastReceived} </td>
+						<td> ${ppbmeteredprice.InclusivePeriod}</td>
+						<td> ${ppbmeteredprice.NextScheduledRun}</td>
+						<td>
+							<a  class="hide-button-background" 
+							    tabindex="0"
+                                data-placement="right"
+                                role="button"
+                                data-html="true"
+                                data-toggle="popover"
+                                data-trigger="focus"
+								id='gd-price-btn-${i}' 
+								data-toggle="popover" 
+								title="Run History" 
+								data-content="<b>From</b><br>${ppbmeteredprice.RunHistory}</br><br><b>Inclusive Periods</b></br>${ppbmeteredprice.InclusivePeriod}"><i class="fa fa-info-circle fa-2x"></i>
+
+					
+							</a>
+								
+                        </td>
+						<td><a href=${ppbmeteredprice.Information}><i class="fa fa-globe fa-2x fa-spin"></i></a></td>'
+						</tr>`;
+          $('#ppbpriceTable tbody').append(ppbmeteredpriceRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+
+        $.each(result, function (i, ppbmeteredprice) {
+          const ppbmeteredpriceRow =
+            '<div>' +
+            '<div class="widget-subtitle" style="background: orange; width: 80%; border-radius: 10px; color: white; padding: 2px;">' +
+            '' +
+            ppbmeteredprice.Market +
+            ' received at ' +
+            ppbmeteredprice.LastReceived +
+            '' +
+            '</div>';
+          $('#successfullJobs').append(ppbmeteredpriceRow);
+        });
+      },
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+
+    $.ajax({
+      type: 'GET',
+      url: '/api/enappsysprices',
+
+      success: function (result) {
+        $.each(result, function (i, enappsysprice) {
+          const enappsyspriceRow = `<tr>
+						<td> ${enappsysprice.Market}</td>' +
+						<td> ${enappsysprice.LastReceived} </td>
+						<td> ${enappsysprice.InclusivePeriod}</td>
+						<td> ${enappsysprice.NextScheduledRun}</td>
+						<td>
+							<a  class="hide-button-background" 
+							    tabindex="0"
+                                data-placement="right"
+                                role="button"
+                                data-html="true"
+                                data-toggle="popover"
+                                data-trigger="focus"
+								id='gd-price-btn-${i}' 
+								data-toggle="popover" 
+								title="Run History" 
+								data-content="<b>From</b><br>${enappsysprice.RunHistory}</br><br><b>Inclusive Periods</b></br>${enappsysprice.InclusivePeriod}"><i class="fa fa-info-circle fa-2x"></i>
+
+					
+							</a>
+                        </td>
+						<td><a href=${enappsysprice.Information}><i class="fa fa-globe fa-2x fa-spin"></i></a></td>'
+						</tr>`;
+          $('#enappsyspriceTable tbody').append(enappsyspriceRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+
+        $.each(result, function (i, enappsysprice) {
+          const enappsyspriceRow =
+            '<div>' +
+            '<div class="widget-subtitle" style="background: orange; width: 80%; border-radius: 10px; color: white; padding: 2px;">' +
+            '' +
+            enappsysprice.Market +
+            ' received at ' +
+            enappsysprice.LastReceived +
+            '' +
+            '</div>';
+          $('#successfullJobs').append(enappsyspriceRow);
+        });
+      },
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+
+    $.ajax({
+      type: 'GET',
+      url: '/api/semopxprices',
+
+      success: function (result) {
+        let spliderRef = $('#splide__list6');
+        console.log(result);
+        let content = '';
+        let paginator = '';
+        result.forEach((semoreportsprice, i) => {
+          content += ` 
+                    <li class="splide__slide">
+                            <div class="">
+                                <div class="widget-title">Next Job Run</div>
+                                <div class="widget-title">${semoreportsprice.Market}</div>
+                                <div class="widget-int">${semoreportsprice.NextScheduledRun}</div>
+                            </div> 
+                    </li>
+        	    `;
+        });
+        spliderRef.html(content);
+        new Splide('#splide6', {
+          type: 'loop',
+          autoplay: true,
+          arrows: true,
+        }).mount();
+
+        $.each(result, function (i, semopxprice) {
+          const semopxpriceRow = `<tr>
+						<td> ${semopxprice.Market}</td>' +
+						<td> ${semopxprice.LastReceived} </td>
+						<td> ${semopxprice.InclusivePeriod}</td>
+						<td> ${semopxprice.NextScheduledRun}</td>
+						<td>
+							<a  class="hide-button-background" 
+							    tabindex="0"
+                                data-placement="right"
+                                role="button"
+                                data-html="true"
+                                data-toggle="popover"
+                                data-trigger="focus"
+								id='gd-price-btn-${i}' 
+								data-toggle="popover" 
+								title="Run History" 
+								data-content="<b>From</b><br>${semopxprice.RunHistory}</br><br><b>Inclusive Periods</b></br>${semopxprice.InclusivePeriod}"><i class="fa fa-info-circle fa-2x"></i>
+
+					
+							</a>
+								
+                        </td>
+						<td><a href=${semopxprice.Information}><i class="fa fa-globe fa-2x fa-spin"></i></a></td>'
+						</tr>`;
+          $('#semopxpriceTable tbody').append(semopxpriceRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+
+        $.each(result, function (i, semopxprice) {
+          const semopxpriceRow =
+            '<div>' +
+            '<div class="widget-subtitle" style="background: orange; width: 80%; border-radius: 10px; color: white; padding: 2px;">' +
+            '' +
+            semopxprice.Market +
+            ' received at ' +
+            semopxprice.LastReceived +
+            '' +
+            '</div>';
+          $('#successfullJobs').append(semopxpriceRow);
+        });
+      },
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+
+    $.ajax({
+      type: 'GET',
+      url: '/api/volprices',
+
+      success: function (result) {
+        let spliderRef = $('#splide__list5');
+        console.log(result);
+        let content = '';
+        let paginator = '';
+        result.forEach((semoreportsprice, i) => {
+          content += ` 
+                    <li class="splide__slide">
+                            <div class="">
+                                <div class="widget-title">Next Job Run</div>
+                                <div class="widget-title">${semoreportsprice.Market}</div>
+                                <div class="widget-int">${semoreportsprice.NextScheduledRun}</div>
+                            </div> 
+                    </li>
+        	    `;
+        });
+        spliderRef.html(content);
+        new Splide('#splide5', {
+          type: 'loop',
+          autoplay: true,
+          arrows: true,
+        }).mount();
+      },
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+    $.ajax({
+      type: 'GET',
+      url: '/api/HCDataVis/Qlik',
+
+      success: function (result) {
+        $.each(result, function (i, datavis) {
+          const datavisRow = `<tr>
+                        <td>${datavis.WorkSpace}</td>
+                        <td><a  href="${datavis.DashboardReport}" target="_blank">${datavis.DashboardReport}</a></td>
+                        <td>${datavis.Description}</td>
+                        <td>${datavis.Access}</td>
+                        <td><a  class="btn btn-primary" href="files/${datavis.DataFlow}" target="_blank">View</a></td>						
+                        <td> 
+                        <form action="http://localhost:8088/api/HCDataVis/delete" method="POST">
+                            <input type="hidden" name="id" class="form-control" value="${datavis.iD}">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editqlik${datavis.iD}">Edit</button> |
+                                <input type="submit" class="btn btn-danger" value="Delete">
+                            </form>
+                        </td>
+						</tr>`;
+          $('#qliktable tbody').append(datavisRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+
+        $.each(result, function (i, datavis) {
+          const editdatavisRow = `<div id="editqlik${datavis.iD}" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="http://localhost:8088/api/HCDataVis/update" method="post">
+                                <input type="hidden" name="id" class="form-control" value="${datavis.iD}" required>
+                                <input type="hidden" name="ReportType" class="form-control" value="${datavis.ReportType}" required>
+
+                                <div class="modal-header">						
+                                    <h4 class="modal-title">Edit Data</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">					
+                                    <div class="form-group">
+                                        <label>WorkSpace</label>
+                                        <input type="text" name="WorkSpace" class="form-control" value="${datavis.WorkSpace}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Dashboard Report</label>
+                                        <input type="text"  name="DashboardReport" class="form-control" value="${datavis.DashboardReport}"required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea class="form-control"  name="Description" required>${datavis.Description}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Access </label>
+                                        <input type="text" class="form-control"  name="Access" value="${datavis.Access}"required>
+                                    </div>	
+                                    <div class="form-group">
+                                        <label>Data Flow </label>
+                                        <input type="text" class="form-control"  name="DataFlow" value="${datavis.DataFlow}"required>
+                                    </div>		
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" class="btn btn-info" value="Save">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                
+                    </div>`;
+          $('#modalqlik').append(editdatavisRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+      },
+      // <td><input class="btn btn-primary" type=button onClick="location.href='\\enr-hvh-mtl-02\inetpub\wwwroot\EnergiaDashboardB\files\PowerBIDataFlow.vsd'" value='View'></td>
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+    $.ajax({
+      type: 'GET',
+      url: '/api/HCDataVis/PowerBi',
+
+      success: function (result) {
+        $.each(result, function (i, datavis) {
+          const datavisRow = `<tr>
+                        <td>${datavis.WorkSpace}</td>
+                        <td><a  href="${datavis.DashboardReport}" target="_blank">${datavis.DashboardReport}</a></td>
+                        <td>${datavis.Description}</td>
+                        <td>${datavis.Access}</td>
+                        <td><a  class="btn btn-primary" href="files/${datavis.DataFlow}" target="_blank">View</a></td>						
+                        <td> 
+                        <form action="http://localhost:8088/api/HCDataVis/delete" method="POST">
+                            <input type="hidden" name="id" class="form-control" value="${datavis.iD}">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editpowerbi${datavis.iD}">Edit</button> |
+                                <input type="submit" class="btn btn-danger" value="Delete">
+                            </form>
+                        </td>
+						</tr>`;
+          $('#powerbitable tbody').append(datavisRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+
+        $.each(result, function (i, datavis) {
+          const editdatavisRow = `<div id="editpowerbi${datavis.iD}" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="http://localhost:8088/api/HCDataVis/update" method="post">
+                                <input type="hidden" name="id" class="form-control" value="${datavis.iD}" required>
+                                <input type="hidden" name="ReportType" class="form-control" value="${datavis.ReportType}" required>
+
+                                <div class="modal-header">						
+                                    <h4 class="modal-title">Edit Data</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">					
+                                    <div class="form-group">
+                                        <label>WorkSpace</label>
+                                        <input type="text" name="WorkSpace" class="form-control" value="${datavis.WorkSpace}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Dashboard Report</label>
+                                        <input type="text"  name="DashboardReport" class="form-control" value="${datavis.DashboardReport}"required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea class="form-control"  name="Description" required>${datavis.Description}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Access </label>
+                                        <input type="text" class="form-control"  name="Access" value="${datavis.Access}"required>
+                                    </div>	
+                                    <div class="form-group">
+                                        <label>Data Flow </label>
+                                        <input type="text" class="form-control"  name="DataFlow" value="${datavis.DataFlow}"required>
+                                    </div>		
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" class="btn btn-info" value="Save">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                
+                    </div>`;
+          $('#modalpowerbi').append(editdatavisRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+      },
+      // <td><input class="btn btn-primary" type=button onClick="location.href='\\enr-hvh-mtl-02\inetpub\wwwroot\EnergiaDashboardB\files\PowerBIDataFlow.vsd'" value='View'></td>
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+    $.ajax({
+      type: 'GET',
+      url: '/api/HCDataVis/SSRS',
+
+      success: function (result) {
+        $.each(result, function (i, datavis) {
+          const datavisRow = `<tr>
+                        <td>${datavis.WorkSpace}</td>
+                        <td><a  href="${datavis.DashboardReport}" target="_blank">${datavis.DashboardReport}</a></td>
+                        <td>${datavis.Description}</td>
+                        <td>${datavis.Access}</td>
+                        <td><a  class="btn btn-primary" href="files/${datavis.DataFlow}" target="_blank">View</a></td>						
+                        <td> 
+                        <form action="http://localhost:8088/api/HCDataVis/delete" method="POST">
+                            <input type="hidden" name="id" class="form-control" value="${datavis.iD}">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editssrs${datavis.iD}">Edit</button> |
+                                <input type="submit" class="btn btn-danger" value="Delete">
+                            </form>
+                        </td>
+						</tr>`;
+          $('#ssrstablea tbody').append(datavisRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+
+        $.each(result, function (i, datavis) {
+          const editdatavisRow = `<div id="editssrs${datavis.iD}" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="http://localhost:8088/api/HCDataVis/update" method="post">
+                                <input type="hidden" name="id" class="form-control" value="${datavis.iD}" required>
+                                <input type="hidden" name="ReportType" class="form-control" value="${datavis.ReportType}" required>
+
+                                <div class="modal-header">						
+                                    <h4 class="modal-title">Edit Data</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">					
+                                    <div class="form-group">
+                                        <label>WorkSpace</label>
+                                        <input type="text" name="WorkSpace" class="form-control" value="${datavis.WorkSpace}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Dashboard Report</label>
+                                        <input type="text"  name="DashboardReport" class="form-control" value="${datavis.DashboardReport}"required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea class="form-control"  name="Description" required>${datavis.Description}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Access </label>
+                                        <input type="text" class="form-control"  name="Access" value="${datavis.Access}"required>
+                                    </div>	
+                                    <div class="form-group">
+                                        <label>Data Flow </label>
+                                        <input type="text" class="form-control"  name="DataFlow" value="${datavis.DataFlow}"required>
+                                    </div>		
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" class="btn btn-info" value="Save">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                
+                    </div>`;
+          $('#modalssrs').append(editdatavisRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+      },
+      // <td><input class="btn btn-primary" type=button onClick="location.href='\\enr-hvh-mtl-02\inetpub\wwwroot\EnergiaDashboardB\files\PowerBIDataFlow.vsd'" value='View'></td>
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+    $.ajax({
+      type: 'GET',
+      url: '/api/HCDataVis/SSRS',
+
+      success: function (result) {
+        $.each(result, function (i, datavis) {
+          const datavisRow = `<tr>
+                        <td>${datavis.WorkSpace}</td>
+                        <td><a  href="${datavis.DashboardReport}" target="_blank">${datavis.DashboardReport}</a></td>
+                        <td>${datavis.Description}</td>
+                        <td>${datavis.Access}</td>
+                        <td><a  class="btn btn-primary" href="files/${datavis.DataFlow}" target="_blank">View</a></td>						
+                        <td> 
+                        <form action="http://localhost:8088/api/HCDataVis/delete" method="POST">
+                            <input type="hidden" name="id" class="form-control" value="${datavis.iD}">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editssrs${datavis.iD}">Edit</button> |
+                                <input type="submit" class="btn btn-danger" value="Delete">
+                            </form>
+                        </td>
+						</tr>`;
+          $('#admin tbody').append(datavisRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+
+        $.each(result, function (i, datavis) {
+          const editdatavisRow = `<div id="editssrs${datavis.iD}" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="http://localhost:8088/api/HCDataVis/update" method="post">
+                                <input type="hidden" name="id" class="form-control" value="${datavis.iD}" required>
+                                <input type="hidden" name="ReportType" class="form-control" value="${datavis.ReportType}" required>
+
+                                <div class="modal-header">						
+                                    <h4 class="modal-title">Edit Data</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">					
+                                    <div class="form-group">
+                                        <label>WorkSpace</label>
+                                        <input type="text" name="WorkSpace" class="form-control" value="${datavis.WorkSpace}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Dashboard Report</label>
+                                        <input type="text"  name="DashboardReport" class="form-control" value="${datavis.DashboardReport}"required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea class="form-control"  name="Description" required>${datavis.Description}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Access </label>
+                                        <input type="text" class="form-control"  name="Access" value="${datavis.Access}"required>
+                                    </div>	
+                                    <div class="form-group">
+                                        <label>Data Flow </label>
+                                        <input type="text" class="form-control"  name="DataFlow" value="${datavis.DataFlow}"required>
+                                    </div>		
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" class="btn btn-info" value="Save">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                
+                    </div>`;
+          $('#modalssrs').append(editdatavisRow);
+          //Append newDiv to Popovercontent
+
+          $('[data-toggle="popover"]').popover();
+        });
+      },
+      // <td><input class="btn btn-primary" type=button onClick="location.href='\\enr-hvh-mtl-02\inetpub\wwwroot\EnergiaDashboardB\files\PowerBIDataFlow.vsd'" value='View'></td>
+
+      error: function (e) {
+        alert('ERROR: ', e);
+        console.log('ERROR: ', e);
+      },
+    });
+  }
+});
